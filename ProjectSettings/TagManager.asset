@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Suelo
   - Obstaculo
+  - Personaje
+  - Victoria
+  - Nave
   layers:
   - Default
   - TransparentFX

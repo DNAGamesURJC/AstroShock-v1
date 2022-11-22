@@ -6,21 +6,18 @@ public class GameManager : MonoBehaviour
 {
     //Variables
     public Renderer fondo;
-    public GameObject pinchopeq;
-    public GameObject pinchogr;
     public bool Gameover = false;
     public GameObject GameOver;
     public float velocidad = 2;
+    public bool Pausado = false;
+    public GameObject Pausa;
+    public GameObject Opciones;
+    public bool Victory = false;
+    public GameObject Victoria;
 
-    //Lista de los pinchos
-    public List<GameObject> obst;
     // Start is called before the first frame update
     void Start()
     {
-        //Instanciado de los pinchos
-        obst.Add(Instantiate(pinchopeq, new Vector2(14, -2), Quaternion.identity));
-        obst.Add(Instantiate(pinchogr, new Vector2(20, -2), Quaternion.identity));
-
 
     }
 
@@ -30,27 +27,69 @@ public class GameManager : MonoBehaviour
         //El fondo se mueve
         fondo.material.mainTextureOffset = fondo.material.mainTextureOffset + new Vector2(0.02f,0)*Time.deltaTime;
 
-        //Si no se ha perdido, no sale el GameOver
-        if (Gameover == false) {
-            GameOver.SetActive(false);
-            //Si no se ha perdido, el juego funciona
+        //Si no se ha ganado y no se ha pausado
+        if (Victory == false && Pausado == false)
+        {
+            //No aparece la pantalla de victoria
+            Victoria.SetActive(false);
+            //El boton de pausa aparece
+            Pausa.SetActive(true);
+            //No aparece la pantalla de pausa
+            Opciones.SetActive(false);
+            //El tiempo sigue corriendo
             Time.timeScale = 1;
-        //Si se ha perdido, sale el GameOver
-        } else if (Gameover == true) {
-            GameOver.SetActive(true);
-            //Si se ha perdido, el juego se pausa
+
+            //Si no se ha ganado y se ha pausado
+        }
+        else if (Victory == false && Pausado == true)
+        {
+            //Desaparece el boton de pausa
+            Pausa.SetActive(false);
+            //Aparece la pantalla de pausa
+            Opciones.SetActive(true);
+            //El tiempo se para
+            Time.timeScale = 0;
+
+            //Si se ha ganado
+        }
+        else if (Victory == true)
+        {
+            //Aparece la pantalla de victoria
+            Victoria.SetActive(true);
+            //Se pausa el movimiento
+            Pausado = true;
+            //El tiempo se para
             Time.timeScale = 0;
         }
 
-        //PRUEBA, genera infinitamente un pincho pequeño y otro grande
-        for (int i = 0; i<obst.Count;i++) {
+        //Si no se ha perdido y no se ha pausado
+        if (Gameover == false && Pausado == false) {
+            //No aparece la pantalla de GameOver
+            GameOver.SetActive(false);
+            //El boton de pausa aparece
+            Pausa.SetActive(true);
+            //No aparece la pantalla de pausa
+            Opciones.SetActive(false);
+            //El tiempo sigue corriendo
+            Time.timeScale = 1;
 
-            if (obst[i].transform.position.x <= -10) {
-                float RandomObst = Random.Range(11, 18);
-                obst[i].transform.position = new Vector3(RandomObst, -2, 0);
-            }
+            //Si no se ha perdido y se ha pausado
+        } else if (Gameover == false && Pausado == true) {
+            //Desaparece el boton de pausa
+            Pausa.SetActive(false);
+            //Aparece la pantalla de pausa
+            Opciones.SetActive(true);
+            //El tiempo se para
+            Time.timeScale = 0;
 
-            obst[i].transform.position = obst[i].transform.position + new Vector3(-1,0,0) * Time.deltaTime * velocidad;
+            //Si se ha perdido
+        } else if (Gameover == true) {
+            //Aparece la pantalla de GameOver
+            GameOver.SetActive(true);
+            //Se pausa el movimiento
+            Pausado = true;
+            //El tiempo se para
+            Time.timeScale = 0;
         }
 
 
